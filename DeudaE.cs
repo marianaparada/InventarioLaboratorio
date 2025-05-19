@@ -29,5 +29,15 @@ namespace InventarioLaboratorio
             menu.Show();
             this.Hide();
         }
+
+        private void listaDeDeudaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TCDE.SelectedIndex = 0;
+        }
+
+        private void añadirDeudaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TCDE.SelectedIndex = 1; 
+        }
     }
 }
