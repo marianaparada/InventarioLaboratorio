@@ -1,0 +1,5 @@
+﻿3,101,Pipetas graduadas,Vidrio,15  
+1,205,Agitador Magnetico,Metal,2  
+4,178,Pinza de Madera,Madera,6  
+2,199,Pesas de 10g,Metal,5  
+4,333,Pizeta,Plastico,10
