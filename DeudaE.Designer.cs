@@ -42,6 +42,7 @@
             Cnmr = new DataGridViewTextBoxColumn();
             Ccant = new DataGridViewTextBoxColumn();
             TPDE2 = new TabPage();
+            btnDevolver = new Button();
             lblCantD = new Label();
             lblIDD = new Label();
             lblDev = new Label();
@@ -49,7 +50,6 @@
             txtCantD = new TextBox();
             txtIDD = new TextBox();
             txtRegD = new TextBox();
-            btnDevolver = new Button();
             MSDE.SuspendLayout();
             TCDE.SuspendLayout();
             TPDE1.SuspendLayout();
@@ -199,6 +199,17 @@
             TPDE2.TabIndex = 1;
             TPDE2.Text = "Registrar Deuda";
             // 
+            // btnDevolver
+            // 
+            btnDevolver.BackColor = Color.SeaGreen;
+            btnDevolver.Location = new Point(305, 290);
+            btnDevolver.Name = "btnDevolver";
+            btnDevolver.Size = new Size(134, 43);
+            btnDevolver.TabIndex = 7;
+            btnDevolver.Text = "Devolver";
+            btnDevolver.UseVisualStyleBackColor = false;
+            btnDevolver.Click += btnDevolver_Click;
+            // 
             // lblCantD
             // 
             lblCantD.AutoSize = true;
@@ -260,25 +271,15 @@
             txtRegD.Size = new Size(190, 39);
             txtRegD.TabIndex = 0;
             // 
-            // btnDevolver
-            // 
-            btnDevolver.BackColor = Color.SeaGreen;
-            btnDevolver.Location = new Point(305, 290);
-            btnDevolver.Name = "btnDevolver";
-            btnDevolver.Size = new Size(134, 43);
-            btnDevolver.TabIndex = 7;
-            btnDevolver.Text = "Devolver";
-            btnDevolver.UseVisualStyleBackColor = false;
-            // 
             // DeudaE
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SeaGreen;
             ClientSize = new Size(800, 450);
-            Controls.Add(TCDE);
             Controls.Add(btnRD);
             Controls.Add(MSDE);
+            Controls.Add(TCDE);
             MainMenuStrip = MSDE;
             Name = "DeudaE";
             Text = "Form2";
