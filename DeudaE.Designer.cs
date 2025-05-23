@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             btnRD = new Button();
             MSDE = new MenuStrip();
             listaDeDeudaToolStripMenuItem = new ToolStripMenuItem();
             añadirDeudaToolStripMenuItem = new ToolStripMenuItem();
             TCDE = new TabControl();
             TPDE1 = new TabPage();
-            dataGridView1 = new DataGridView();
+            dgvMatReac = new DataGridView();
             Cf = new DataGridViewTextBoxColumn();
             Cr = new DataGridViewTextBoxColumn();
             Cn = new DataGridViewTextBoxColumn();
@@ -53,18 +55,18 @@
             MSDE.SuspendLayout();
             TCDE.SuspendLayout();
             TPDE1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMatReac).BeginInit();
             TPDE2.SuspendLayout();
             SuspendLayout();
             // 
             // btnRD
             // 
             btnRD.BackColor = Color.SeaGreen;
-            btnRD.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRD.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRD.ForeColor = SystemColors.ButtonHighlight;
-            btnRD.Location = new Point(321, 393);
+            btnRD.Location = new Point(895, 850);
             btnRD.Name = "btnRD";
-            btnRD.Size = new Size(134, 45);
+            btnRD.Size = new Size(164, 57);
             btnRD.TabIndex = 0;
             btnRD.Text = "Regresar";
             btnRD.UseVisualStyleBackColor = false;
@@ -76,7 +78,7 @@
             MSDE.Items.AddRange(new ToolStripItem[] { listaDeDeudaToolStripMenuItem, añadirDeudaToolStripMenuItem });
             MSDE.Location = new Point(0, 0);
             MSDE.Name = "MSDE";
-            MSDE.Size = new Size(800, 33);
+            MSDE.Size = new Size(1878, 33);
             MSDE.TabIndex = 1;
             MSDE.Text = "menuStrip1";
             // 
@@ -102,39 +104,58 @@
             TCDE.Location = new Point(12, 0);
             TCDE.Name = "TCDE";
             TCDE.SelectedIndex = 0;
-            TCDE.Size = new Size(776, 387);
+            TCDE.Size = new Size(1854, 826);
             TCDE.TabIndex = 2;
             // 
             // TPDE1
             // 
             TPDE1.BackColor = Color.SeaGreen;
-            TPDE1.Controls.Add(dataGridView1);
+            TPDE1.Controls.Add(dgvMatReac);
             TPDE1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             TPDE1.ForeColor = SystemColors.ButtonHighlight;
             TPDE1.Location = new Point(4, 34);
             TPDE1.Name = "TPDE1";
             TPDE1.Padding = new Padding(3);
-            TPDE1.Size = new Size(768, 349);
+            TPDE1.Size = new Size(1846, 788);
             TPDE1.TabIndex = 0;
             TPDE1.Text = "Lista de Deuda";
             // 
-            // dataGridView1
+            // dgvMatReac
             // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Cf, Cr, Cn, Cid, Cnmr, Ccant });
-            dataGridView1.Location = new Point(0, 6);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(768, 343);
-            dataGridView1.TabIndex = 0;
+            dgvMatReac.AllowUserToAddRows = false;
+            dgvMatReac.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvMatReac.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvMatReac.ColumnHeadersHeight = 40;
+            dgvMatReac.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvMatReac.Columns.AddRange(new DataGridViewColumn[] { Cf, Cr, Cn, Cid, Cnmr, Ccant });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMatReac.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMatReac.GridColor = SystemColors.ActiveBorder;
+            dgvMatReac.Location = new Point(3, 6);
+            dgvMatReac.Name = "dgvMatReac";
+            dgvMatReac.ReadOnly = true;
+            dgvMatReac.RowHeadersWidth = 62;
+            dgvMatReac.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvMatReac.Size = new Size(1840, 779);
+            dgvMatReac.TabIndex = 0;
             // 
             // Cf
             // 
             Cf.HeaderText = "Fecha";
-            Cf.MinimumWidth = 8;
+            Cf.MinimumWidth = 150;
             Cf.Name = "Cf";
             Cf.ReadOnly = true;
             Cf.Width = 150;
@@ -142,23 +163,23 @@
             // Cr
             // 
             Cr.HeaderText = "Nro. Registro";
-            Cr.MinimumWidth = 8;
+            Cr.MinimumWidth = 200;
             Cr.Name = "Cr";
             Cr.ReadOnly = true;
-            Cr.Width = 150;
+            Cr.Width = 200;
             // 
             // Cn
             // 
             Cn.HeaderText = "Nombre Estudiante";
-            Cn.MinimumWidth = 8;
+            Cn.MinimumWidth = 550;
             Cn.Name = "Cn";
             Cn.ReadOnly = true;
-            Cn.Width = 150;
+            Cn.Width = 550;
             // 
             // Cid
             // 
             Cid.HeaderText = "ID";
-            Cid.MinimumWidth = 8;
+            Cid.MinimumWidth = 150;
             Cid.Name = "Cid";
             Cid.ReadOnly = true;
             Cid.Width = 150;
@@ -166,15 +187,15 @@
             // Cnmr
             // 
             Cnmr.HeaderText = "Materiales y Reactivos";
-            Cnmr.MinimumWidth = 8;
+            Cnmr.MinimumWidth = 580;
             Cnmr.Name = "Cnmr";
             Cnmr.ReadOnly = true;
-            Cnmr.Width = 150;
+            Cnmr.Width = 580;
             // 
             // Ccant
             // 
             Ccant.HeaderText = "Cantidad";
-            Ccant.MinimumWidth = 8;
+            Ccant.MinimumWidth = 150;
             Ccant.Name = "Ccant";
             Ccant.ReadOnly = true;
             Ccant.Width = 150;
@@ -195,16 +216,17 @@
             TPDE2.Location = new Point(4, 34);
             TPDE2.Name = "TPDE2";
             TPDE2.Padding = new Padding(3);
-            TPDE2.Size = new Size(768, 349);
+            TPDE2.Size = new Size(1846, 788);
             TPDE2.TabIndex = 1;
             TPDE2.Text = "Registrar Deuda";
             // 
             // btnDevolver
             // 
             btnDevolver.BackColor = Color.SeaGreen;
-            btnDevolver.Location = new Point(305, 290);
+            btnDevolver.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDevolver.Location = new Point(859, 634);
             btnDevolver.Name = "btnDevolver";
-            btnDevolver.Size = new Size(134, 43);
+            btnDevolver.Size = new Size(200, 55);
             btnDevolver.TabIndex = 7;
             btnDevolver.Text = "Devolver";
             btnDevolver.UseVisualStyleBackColor = false;
@@ -214,9 +236,10 @@
             // 
             lblCantD.AutoSize = true;
             lblCantD.BorderStyle = BorderStyle.Fixed3D;
-            lblCantD.Location = new Point(235, 230);
+            lblCantD.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCantD.Location = new Point(709, 466);
             lblCantD.Name = "lblCantD";
-            lblCantD.Size = new Size(118, 34);
+            lblCantD.Size = new Size(172, 50);
             lblCantD.TabIndex = 6;
             lblCantD.Text = "Cantidad";
             // 
@@ -224,19 +247,20 @@
             // 
             lblIDD.AutoSize = true;
             lblIDD.BorderStyle = BorderStyle.Fixed3D;
-            lblIDD.Location = new Point(222, 167);
+            lblIDD.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblIDD.Location = new Point(691, 369);
             lblIDD.Name = "lblIDD";
-            lblIDD.Size = new Size(131, 34);
+            lblIDD.Size = new Size(190, 50);
             lblIDD.TabIndex = 5;
             lblIDD.Text = "Código ID";
             // 
             // lblDev
             // 
             lblDev.AutoSize = true;
-            lblDev.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDev.Location = new Point(247, 21);
+            lblDev.Font = new Font("Segoe UI", 28F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDev.Location = new Point(750, 107);
             lblDev.Name = "lblDev";
-            lblDev.Size = new Size(274, 54);
+            lblDev.Size = new Size(382, 74);
             lblDev.TabIndex = 4;
             lblDev.Text = "Devoluciones";
             // 
@@ -244,31 +268,35 @@
             // 
             lblRegD.AutoSize = true;
             lblRegD.BorderStyle = BorderStyle.Fixed3D;
-            lblRegD.Location = new Point(106, 104);
+            lblRegD.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRegD.Location = new Point(520, 271);
             lblRegD.Name = "lblRegD";
-            lblRegD.Size = new Size(247, 34);
+            lblRegD.Size = new Size(361, 50);
             lblRegD.TabIndex = 3;
             lblRegD.Text = "Número de Registro";
             // 
             // txtCantD
             // 
-            txtCantD.Location = new Point(444, 225);
+            txtCantD.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtCantD.Location = new Point(1064, 466);
             txtCantD.Name = "txtCantD";
-            txtCantD.Size = new Size(190, 39);
+            txtCantD.Size = new Size(190, 50);
             txtCantD.TabIndex = 2;
             // 
             // txtIDD
             // 
-            txtIDD.Location = new Point(444, 162);
+            txtIDD.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtIDD.Location = new Point(1064, 369);
             txtIDD.Name = "txtIDD";
-            txtIDD.Size = new Size(190, 39);
+            txtIDD.Size = new Size(190, 50);
             txtIDD.TabIndex = 1;
             // 
             // txtRegD
             // 
-            txtRegD.Location = new Point(444, 99);
+            txtRegD.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtRegD.Location = new Point(1064, 271);
             txtRegD.Name = "txtRegD";
-            txtRegD.Size = new Size(190, 39);
+            txtRegD.Size = new Size(190, 50);
             txtRegD.TabIndex = 0;
             // 
             // DeudaE
@@ -276,10 +304,10 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SeaGreen;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1878, 944);
             Controls.Add(btnRD);
-            Controls.Add(MSDE);
             Controls.Add(TCDE);
+            Controls.Add(MSDE);
             MainMenuStrip = MSDE;
             Name = "DeudaE";
             Text = "Form2";
@@ -288,7 +316,7 @@
             MSDE.PerformLayout();
             TCDE.ResumeLayout(false);
             TPDE1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMatReac).EndInit();
             TPDE2.ResumeLayout(false);
             TPDE2.PerformLayout();
             ResumeLayout(false);
@@ -304,13 +332,7 @@
         private TabControl TCDE;
         private TabPage TPDE1;
         private TabPage TPDE2;
-        private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Cf;
-        private DataGridViewTextBoxColumn Cr;
-        private DataGridViewTextBoxColumn Cn;
-        private DataGridViewTextBoxColumn Cid;
-        private DataGridViewTextBoxColumn Cnmr;
-        private DataGridViewTextBoxColumn Ccant;
+        private DataGridView dgvMatReac;
         private Label lblDev;
         private Label lblRegD;
         private TextBox txtCantD;
@@ -319,5 +341,11 @@
         private Label lblCantD;
         private Label lblIDD;
         private Button btnDevolver;
+        private DataGridViewTextBoxColumn Cf;
+        private DataGridViewTextBoxColumn Cr;
+        private DataGridViewTextBoxColumn Cn;
+        private DataGridViewTextBoxColumn Cid;
+        private DataGridViewTextBoxColumn Cnmr;
+        private DataGridViewTextBoxColumn Ccant;
     }
 }
