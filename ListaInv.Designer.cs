@@ -71,7 +71,8 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SeaGreen;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1878, 944);
+            Controls.Add(dgvMatReac);
             Controls.Add(lblLisMatReac);
             Controls.Add(listBoxMatReac);
             Controls.Add(btnRLI);
