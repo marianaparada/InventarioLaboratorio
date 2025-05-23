@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace InventarioLaboratorio
 {
     public partial class DeudaE : Form
     {
-        
         private readonly string rutaDeudas = Path.Combine(Application.StartupPath, "deuda.txt");
         private readonly string rutaMateriales = Path.Combine(Application.StartupPath, "materiales.txt");
 
@@ -28,114 +22,89 @@ namespace InventarioLaboratorio
         private void DeudaE_Load(object sender, EventArgs e)
         {
             CargarDeudas();
-            ActualizardataGridView1();
-        }
-
-        private void btnRD_Click(object sender, EventArgs e)
-        {
-            new Menu().Show();
-            this.Hide();
-        }
-
-        private void listaDeDeudaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TCDE.SelectedIndex = 0;
-        }
-
-        private void añadirDeudaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TCDE.SelectedIndex = 1;
         }
 
         private void btnDevolver_Click(object sender, EventArgs e)
         {
-            string registro = txtRegD.Text;
-            string codigoMaterial = txtIDD.Text;
-            if (!int.TryParse(txtCantD.Text, out int cantidadDevolver)
-                || string.IsNullOrEmpty(registro)
-                || string.IsNullOrEmpty(codigoMaterial))
+            string registro = txtRegD.Text.Trim();
+            string codigo = txtIDD.Text.Trim();
+            if (!int.TryParse(txtCantD.Text, out int cantidad))
             {
-                MessageBox.Show("Todos los campos deben ser completados y la cantidad debe ser un número.");
+                MessageBox.Show("Cantidad no válida.");
                 return;
             }
-            DevolverMaterial(registro, codigoMaterial, cantidadDevolver);
-        }
 
-        private void DevolverMaterial(string registro, string codigoMaterial, int cantidadDevolver)
-        {
             var deudas = LeerDeudas();
             var materiales = LeerMateriales();
 
-            if (deudas.Count == 0)
-            {
-                MessageBox.Show("No se encontró ninguna deuda. Verifica que 'deuda.txt' exista y no esté vacío.");
-                return;
-            }
-            if (materiales.Count == 0)
-            {
-                MessageBox.Show("No se encontró ningún material. Verifica que 'materiales.txt' exista y no esté vacío.");
-                return;
-            }
+            var deuda = deudas.FirstOrDefault(d =>
+                d.Registro.Equals(registro, StringComparison.OrdinalIgnoreCase) &&
+                d.CodigoMaterial.Equals(codigo, StringComparison.OrdinalIgnoreCase));
 
-            string regBuscado = registro.Trim().ToUpper();
-            string codBuscado = codigoMaterial.Trim().ToUpper();
-
-            var deudaEncontrada = deudas.FirstOrDefault(d => d.Registro.Trim().ToUpper() == regBuscado
-                                                            && d.CodigoMaterial.Trim().ToUpper() == codBuscado);
-            var material = materiales.FirstOrDefault(m => m.CodigoMaterial == codBuscado);
-
-            if (deudaEncontrada == null)
+            if (deuda == null)
             {
-                MessageBox.Show("No se encontró la deuda con el registro y código de material proporcionados.");
-                return;
-            }
-            if (cantidadDevolver > deudaEncontrada.Cantidad)
-            {
-                MessageBox.Show("No se pudo devolver por exceder la cantidad prestada.");
+                MessageBox.Show("No se encontró deuda para el código y registro.");
                 return;
             }
 
-            deudaEncontrada.Cantidad -= cantidadDevolver;
-            if (deudaEncontrada.Cantidad == 0)
-                deudas = new Queue<Deuda>(deudas.Where(d => d.Cantidad > 0));
+            if (cantidad > deuda.Cantidad)
+            {
+                MessageBox.Show("No puede devolver más de lo que debe.");
+                return;
+            }
 
-            material.CantidadDisponible += cantidadDevolver;
+            var material = materiales.FirstOrDefault(m =>
+                m.CodigoMaterial.Equals(codigo, StringComparison.OrdinalIgnoreCase));
 
+            if (material == null)
+            {
+                MessageBox.Show("Material no encontrado.");
+                return;
+            }
+
+            // Actualizar deuda
+            deuda.Cantidad -= cantidad;
+            if (deuda.Cantidad == 0)
+                deudas = deudas.Where(d => d != deuda).ToList();
+
+            // Actualizar inventario
+            material.CantidadDisponible += cantidad;
+
+            // Guardar cambios
             GuardarDeudas(deudas);
             GuardarMateriales(materiales);
 
+            // Registrar devolución
             var devolucion = new Devolucion
             {
                 Fecha = DateTime.Now.ToString("dd-MM-yyyy"),
-                Registro = registro,
-                NombreEstudiante = deudaEncontrada.NombreEstudiante,
-                CodigoMaterial = codigoMaterial,
-                NombreMaterial = deudaEncontrada.NombreMaterial,
-                Cantidad = cantidadDevolver
+                Registro = deuda.Registro,
+                NombreEstudiante = deuda.NombreEstudiante,
+                CodigoMaterial = deuda.CodigoMaterial,
+                NombreMaterial = deuda.NombreMaterial,
+                Cantidad = cantidad
             };
+
             if (material.Prioridad == 1)
                 devolucionesPrioritarias.Enqueue(devolucion, 1);
             else
                 pilaDevoluciones.Push(devolucion);
 
             MessageBox.Show("Devolución registrada correctamente.");
-            ActualizardataGridView1();
+            CargarDeudas();
         }
 
-        private Queue<Deuda> LeerDeudas()
+        private List<Deuda> LeerDeudas()
         {
-            var deudas = new Queue<Deuda>();
-            if (!File.Exists(rutaDeudas))
-            {
-                MessageBox.Show($"No se encontró 'deuda.txt' en: {rutaDeudas}");
-                return deudas;
-            }
+            var lista = new List<Deuda>();
+            if (!File.Exists(rutaDeudas)) return lista;
+
             foreach (var linea in File.ReadAllLines(rutaDeudas))
             {
                 var datos = linea.Split(',');
                 if (datos.Length == 6 && int.TryParse(datos[5], out int cant))
                 {
-                    deudas.Enqueue(new Deuda
+                    lista.Add(new Deuda
                     {
                         Fecha = datos[0],
                         Registro = datos[1],
@@ -146,76 +115,55 @@ namespace InventarioLaboratorio
                     });
                 }
             }
-            return deudas;
+            return lista;
         }
 
-        private List<Material> LeerMateriales()
+        private void GuardarDeudas(IEnumerable<Deuda> deudas)
         {
-            var materiales = new List<Material>();
-            if (!File.Exists(rutaMateriales))
-            {
-                MessageBox.Show($"No se encontró 'materiales.txt' en: {rutaMateriales}");
-                return materiales;
-            }
-
-            foreach (var linea in File.ReadAllLines(rutaMateriales))
-            {
-                var datos = linea.Split(',');
-                
-                if (datos.Length >= 5
-                    && int.TryParse(datos[0].Trim(), out int prio)
-                    && int.TryParse(datos[4].Trim(), out int cantDisp))
-                {
-                    materiales.Add(new Material
-                    {
-                        CodigoMaterial = datos[1].Trim().ToUpper(),
-                        CantidadDisponible = cantDisp,
-                        Prioridad = prio
-                    });
-                }
-            }
-
-            return materiales;
-        }
-
-
-        private void GuardarDeudas(Queue<Deuda> deudas)
-        {
-            using var sw = new StreamWriter(rutaDeudas);
+            using var sw = new StreamWriter(rutaDeudas, false);
             foreach (var d in deudas)
                 sw.WriteLine($"{d.Fecha},{d.Registro},{d.NombreEstudiante},{d.CodigoMaterial},{d.NombreMaterial},{d.Cantidad}");
         }
 
-        private void GuardarMateriales(List<Material> materiales)
+        private List<Material> LeerMateriales()
         {
-            using var sw = new StreamWriter(rutaMateriales);
-            foreach (var m in materiales)
-                sw.WriteLine($"{m.CodigoMaterial},{m.CantidadDisponible},{m.Prioridad}");
+            var lista = new List<Material>();
+            if (!File.Exists(rutaMateriales)) return lista;
+
+            foreach (var linea in File.ReadAllLines(rutaMateriales))
+            {
+                var datos = linea.Split(',');
+                if (datos.Length == 5 &&
+                    int.TryParse(datos[0], out int prioridad) &&
+                    int.TryParse(datos[4], out int cantidad))
+                {
+                    lista.Add(new Material
+                    {
+                        Prioridad = prioridad,
+                        CodigoMaterial = datos[1].Trim(),
+                        NombreMaterial = datos[2].Trim(),
+                        Tipo = datos[3].Trim(),
+                        CantidadDisponible = cantidad
+                    });
+                }
+            }
+            return lista;
         }
 
-        private void ActualizardataGridView1()
+        private void GuardarMateriales(List<Material> materiales)
+        {
+            using var sw = new StreamWriter(rutaMateriales, false);
+            foreach (var m in materiales)
+                sw.WriteLine($"{m.Prioridad},{m.CodigoMaterial},{m.NombreMaterial},{m.Tipo},{m.CantidadDisponible}");
+        }
+
+        private void CargarDeudas()
         {
             dgvMatReac.Rows.Clear();
             foreach (var d in LeerDeudas())
                 dgvMatReac.Rows.Add(d.Fecha, d.Registro, d.NombreEstudiante, d.CodigoMaterial, d.NombreMaterial, d.Cantidad);
         }
 
-        private void CargarDeudas()
-        {
-            dgvMatReac.Rows.Clear();
-            if (!File.Exists(rutaDeudas))
-            {
-                MessageBox.Show($"El archivo 'deudas.txt' no existe en: {rutaDeudas}", "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            foreach (var linea in File.ReadAllLines(rutaDeudas))
-            {
-                if (string.IsNullOrWhiteSpace(linea)) continue;
-                var partes = linea.Split(',');
-                if (partes.Length == 6)
-                    dgvMatReac.Rows.Add(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-            }
-        }
         public class Deuda
         {
             public string Fecha { get; set; }
@@ -228,11 +176,12 @@ namespace InventarioLaboratorio
 
         public class Material
         {
-            public string CodigoMaterial { get; set; }
-            public int CantidadDisponible { get; set; }
             public int Prioridad { get; set; }
+            public string CodigoMaterial { get; set; }
+            public string NombreMaterial { get; set; }
+            public string Tipo { get; set; }
+            public int CantidadDisponible { get; set; }
         }
-
 
         public class Devolucion
         {
@@ -245,3 +194,4 @@ namespace InventarioLaboratorio
         }
     }
 }
+
